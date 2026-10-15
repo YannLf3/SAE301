@@ -8,3 +8,22 @@ Thumbs.db
 .idea/
 .vscode/
 *.swp
+
+# Logs des gestionnaires de paquets et outils de build
+npm-debug.log*
+*.log
+.vite/
+
+# Variables d'environnement et secrets locaux (jamais dans le dépôt)
+.env
+.env.*
+!.env.example
+
+# Sorties d'outils d'agents et réglages locaux
+graphify-out/
+.claude/settings.local.json
+
+# Fichiers temporaires et sauvegardes
+*.tmp
+*.bak
+*~
