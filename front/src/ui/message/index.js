@@ -5,10 +5,11 @@ import template from "./template.html?raw";
 // Tailwind ne génère que les classes qu'il trouve telles quelles dans le code.
 const COULEURS = {
   erreur: "border-red-700 text-red-700 dark:border-red-400 dark:text-red-400",
+  info: "border-border-default text-text-muted",
   succes: "border-green-700 text-green-700 dark:border-green-400 dark:text-green-400",
 };
 
-// Message d'information ou d'erreur. data vaut { type: "erreur" | "succes",
+// Message d'information ou d'erreur. data vaut { type: "erreur" | "succes" | "info",
 // texte }, ou null pour n'afficher aucun message.
 let MessageView = {
   html: function (data) {

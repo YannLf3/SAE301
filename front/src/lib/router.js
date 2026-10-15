@@ -24,11 +24,16 @@ class Router {
     // Numéro de la dernière navigation demandée (voir handleRoute).
     this.navigation = 0;
 
+    // Les function classiques ont leur propre this : on garde le routeur.
+    const router = this;
+
     // Boutons Précédent / Suivant du navigateur.
-    window.addEventListener("popstate", () => this.handleRoute());
+    window.addEventListener("popstate", function () {
+      router.handleRoute();
+    });
 
     // Intercepter les clics sur les liens internes.
-    document.addEventListener("click", (e) => {
+    document.addEventListener("click", function (e) {
       // closest : le clic peut viser un élément placé à l'intérieur du lien.
       const lien = e.target.closest("a[data-link]");
       if (lien === null) return;
@@ -38,7 +43,7 @@ class Router {
       if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
 
       e.preventDefault();
-      this.navigate(this.routePath(lien.pathname));
+      router.navigate(router.routePath(lien.pathname));
     });
   }
 
@@ -102,7 +107,7 @@ class Router {
     if (!matches) return {};
 
     const params = {};
-    route.keys.forEach((key, i) => {
+    route.keys.forEach(function (key, i) {
       params[key] = decodeURIComponent(matches[i + 1]);
     });
     return params;
@@ -131,7 +136,9 @@ class Router {
     const navigation = ++this.navigation;
     const path = this.routePath(window.location.pathname);
 
-    const route = this.routes.find((r) => r.regex.test(path));
+    const route = this.routes.find(function (r) {
+      return r.regex.test(path);
+    });
     if (!route) return;
 
     // Le handler peut renvoyer le contenu directement, ou une promesse (page

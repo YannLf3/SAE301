@@ -1,10 +1,11 @@
 # SAE301-Starter
 
-Catalogue de films : une API PHP en trois couches (routage / contrôleur /
+Prototype de click & collect de drones (base technique héritée d'un catalogue
+de films, en cours de remplacement) : une API PHP en trois couches (routage / contrôleur /
 modèle) au-dessus de MySQL, et un front en JavaScript organisé en layouts,
 pages et composants, avec un routeur côté client.
 
-- préférences de tri et de pagination mémorisées dans des cookies ;
+- catalogue complet des produits, avec tri par nom ou par prix ;
 - connexion par session, page Administration réservée au rôle `admin` ;
 - thème clair / sombre en `localStorage`.
 
@@ -12,8 +13,9 @@ pages et composants, avec un routeur côté client.
 
 ```
 .htaccess            /api/... vers le back, tout le reste vers front/dist/
-sql/import.sql       tables film et genre, à importer dans votre base
-back/                API PHP, ne renvoie que du JSON
+sql/schema.sql       schéma : produits, variantes, commandes, stock
+sql/seeds.sql        données initiales
+back/                (base/back/) API PHP, ne renvoie que du JSON
 ├── index.php        point d'entrée : assemble les dépendances, délègue
 ├── config/          identifiants de la base, chemin du projet
 └── src/             Core/ (Request, Response, Router, Database),
@@ -34,10 +36,9 @@ front/               sources du front (Vite + Tailwind)
 
 ## Installation
 
-1. Importez `sql/import.sql` dans votre base depuis phpMyAdmin (il crée les
-   tables `film` et `genre` ; une table existante de même nom serait
-   remplacée).
-2. Dans `back/config/config.php`, renseignez les identifiants de la base et
+1. Importez `sql/schema.sql` puis `sql/seeds.sql` dans votre base depuis
+   phpMyAdmin.
+2. Dans `base/back/config/config.php`, renseignez les identifiants de la base et
    le chemin du projet (`/~votre_login/Base/`).
 3. Dans `front/vite.config.js`, donnez à `BASE` **exactement** le même chemin.
 4. Dans `front/`, installez les dépendances :
@@ -96,7 +97,7 @@ Déclaré dans `main.js`, sur le modèle de `react-router` :
 router.addLayout("/", RootLayout);
 router.addRoute("/", CataloguePage);
 router.addRoute("/admin", AdminPage);
-router.addRoute("/films/:id", FilmPage);   // params.id dans la page
+router.addRoute("/produits/:slug", ProduitPage);   // params.slug dans la page (DEC-c)
 router.addRoute("*", The404Page);          // toujours en dernier
 ```
 
@@ -146,16 +147,15 @@ Une page dynamique suit le découpage Modèle / Contrôleur / Vue :
 
 | Route | Effet |
 |---|---|
-| `GET /api/films?page=2&tri=note&parPage=24` | une page du catalogue |
+| `GET /api/produits?tri=prix_asc` | tous les produits du catalogue |
 | `POST /api/login` | connexion, corps JSON `{"login": …, "mdp": …}` |
 | `POST /api/logout` | déconnexion |
 | `GET /api/admin/stats` | statistiques, réservées au rôle `admin` |
 
-Tris acceptés : `titre`, `annee`, `note`. Valeurs de `parPage` : `12`, `24`,
-`48`. `tri` et `parPage` sont facultatifs : sans eux, le serveur applique les
-préférences mémorisées dans les cookies. La réponse rappelle les réglages
-appliqués (`tri`, `parPage`, `page`, `pagesTotal`, `total`) : le front n'a
-jamais besoin de lire les cookies, qui sont en `HttpOnly`.
+Tris acceptés : `nom` (par défaut), `prix_asc`, `prix_desc`. Un tri inconnu
+retombe sur `nom`. La réponse contient `produits`, le `tri` appliqué et le
+`total`. Chaque produit porte `prix_min` (prix « à partir de »),
+`stock_total` et `disponible`.
 
 ## Comptes
 

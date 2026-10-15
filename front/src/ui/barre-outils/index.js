@@ -1,30 +1,28 @@
 import { genericRenderer, htmlToFragment } from "../../lib/utils.js";
 import template from "./template.html?raw";
 
-// Barre de réglages du catalogue : critère de tri et nombre de films par page.
+// Barre de réglages du catalogue : critère de tri.
 // Le composant ne décide de rien : il affiche les valeurs reçues, et signale
-// les changements par les fonctions reçues dans actions.
+// le changement par la fonction reçue dans actions.
 let BarreOutilsView = {
   html: function (data) {
     return genericRenderer(template, data);
   },
 
   /**
-   * @param {{tri: string, parPage: number, total: number}} data
-   * @param {{surTri: (tri: string) => void,
-   *          surParPage: (parPage: number) => void}} actions
+   * @param {{tri: string, total: number}} data
+   * @param {{surTri: function(string): void}} actions
    */
   dom: function (data, actions) {
     let fragment = htmlToFragment(BarreOutilsView.html(data));
     let tri = fragment.querySelector('select[name="tri"]');
-    let parPage = fragment.querySelector('select[name="parPage"]');
 
     // Un template n'a pas de condition : l'option choisie se règle ici.
     tri.value = data.tri;
-    parPage.value = String(data.parPage);
 
-    tri.addEventListener("change", () => actions.surTri(tri.value));
-    parPage.addEventListener("change", () => actions.surParPage(Number(parPage.value)));
+    tri.addEventListener("change", function () {
+      actions.surTri(tri.value);
+    });
 
     return fragment;
   },

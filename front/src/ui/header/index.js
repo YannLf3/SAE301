@@ -25,14 +25,14 @@ let HeaderView = {
     const toggleBtn = fragment.querySelector('[data-action="toggle-menu"]');
     const mobileNav = fragment.querySelector("#mobile-nav");
     if (toggleBtn && mobileNav) {
-      toggleBtn.addEventListener("click", () => {
+      toggleBtn.addEventListener("click", function () {
         const isOpen = !mobileNav.classList.contains("hidden");
         mobileNav.classList.toggle("hidden");
         toggleBtn.setAttribute("aria-expanded", String(!isOpen));
       });
 
       // Délégation d'événement sur l'ancêtre commun : ferme le menu si on clique sur un lien
-      mobileNav.addEventListener("click", (event) => {
+      mobileNav.addEventListener("click", function (event) {
         if (event.target.closest("a[data-link]")) {
           mobileNav.classList.add("hidden");
           toggleBtn.setAttribute("aria-expanded", "false");

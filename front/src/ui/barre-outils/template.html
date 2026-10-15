@@ -1,21 +1,12 @@
-<div class="mb-6 flex flex-wrap items-end gap-4 rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
-  <label class="flex flex-col gap-2 text-sm font-medium">
+<div class="mb-ui-24 flex flex-wrap items-end gap-ui-16 rounded-ui-12 border border-border-default bg-surface-card p-ui-16">
+  <label class="flex flex-col gap-ui-8 text-label font-medium text-text-primary">
     Trier par
-    <select name="tri" class="h-9 min-w-44 rounded-md border border-zinc-200 bg-white px-3 font-normal transition-colors hover:border-zinc-500 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-zinc-400">
-      <option value="titre">Titre (A → Z)</option>
-      <option value="annee">Année (récents d'abord)</option>
-      <option value="note">Note (meilleurs d'abord)</option>
+    <select name="tri" class="h-ui-40 min-w-44 rounded-ui-8 border border-border-strong bg-surface-default px-ui-12 font-normal text-text-primary transition-colors hover:border-border-focus">
+      <option value="nom">Nom (A → Z)</option>
+      <option value="prix_asc">Prix (croissant)</option>
+      <option value="prix_desc">Prix (décroissant)</option>
     </select>
   </label>
 
-  <label class="flex flex-col gap-2 text-sm font-medium">
-    Films par page
-    <select name="parPage" class="h-9 min-w-44 rounded-md border border-zinc-200 bg-white px-3 font-normal transition-colors hover:border-zinc-500 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-zinc-400">
-      <option value="12">12 films</option>
-      <option value="24">24 films</option>
-      <option value="48">48 films</option>
-    </select>
-  </label>
-
-  <span class="ml-auto text-sm text-zinc-500 dark:text-zinc-400">{{total}} films</span>
+  <p role="status" class="ml-auto text-label text-text-muted">{{total}} produits</p>
 </div>

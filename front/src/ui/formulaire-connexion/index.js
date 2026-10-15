@@ -17,7 +17,7 @@ let FormulaireConnexionView = {
     let fragment = htmlToFragment(FormulaireConnexionView.html(data));
     let formulaire = fragment.querySelector("form");
 
-    formulaire.addEventListener("submit", (ev) => {
+    formulaire.addEventListener("submit", function (ev) {
       // Sans cela, le navigateur enverrait le formulaire de manière classique,
       // en rechargeant la page.
       ev.preventDefault();
@@ -26,7 +26,9 @@ let FormulaireConnexionView = {
 
     fragment
       .querySelector('[data-action="deconnexion"]')
-      .addEventListener("click", () => actions.surDeconnexion());
+      .addEventListener("click", function () {
+        actions.surDeconnexion();
+      });
 
     return fragment;
   },

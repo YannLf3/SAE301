@@ -20,7 +20,9 @@ let StatistiquesView = {
       })
     );
 
-    let lignes = stats.parGenre.map((ligne) => htmlToFragment(genericRenderer(templateLigne, ligne)));
+    let lignes = stats.parGenre.map(function (ligne) {
+      return htmlToFragment(genericRenderer(templateLigne, ligne));
+    });
     fragment.querySelector('slot[name="genres"]').replaceWith(...lignes);
 
     return fragment;

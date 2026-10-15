@@ -41,7 +41,8 @@ SAE301/
 │   ├── package.json          scripts et dépendances front
 │   └── src/                  code source de l'application web
 └── sql/
-    └── import.sql            schéma et données initiales SQL
+    ├── schema.sql            schéma complet (produits, variantes, commandes, stock)
+    └── seeds.sql             données initiales
 ```
 
 Le déplacement du back-end dans `base/back/` est important : les règles de
@@ -116,14 +117,13 @@ front/src/
 ├── ui/
 │   ├── header/
 │   ├── barre-outils/
-│   ├── carte-film/
-│   ├── grille-films/
+│   ├── carte-produit/
+│   ├── grille-produits/
 │   ├── formulaire-connexion/
 │   ├── message/
-│   ├── pagination/
 │   └── statistiques/
 ├── data/
-│   ├── film.js
+│   ├── produit.js
 │   ├── auth.js
 │   └── stats.js
 └── lib/
@@ -143,7 +143,7 @@ Les routes actuellement disponibles sont :
 
 | Route front | Page |
 |---|---|
-| `/` | catalogue de films |
+| `/` | catalogue de produits |
 | `/admin` | connexion et statistiques d'administration |
 | toute route inconnue | page 404 |
 
@@ -168,11 +168,11 @@ conservant les responsabilités séparées.
 
 [`pages/catalogue/page.js`](./front/src/pages/catalogue/page.js) :
 
-- **Modèle (`M`)** : mémorise la réponse catalogue et le message courant ;
-- **Contrôleur (`C`)** : charge une page, modifie le tri, le nombre d'éléments
-  par page et la pagination ;
-- **Vue (`V`)** : compose la barre d'outils, la grille, la pagination et les
-  messages à partir du modèle.
+- **Modèle (`M`)** : mémorise l'état de la page (chargement, prêt, erreur), la
+  réponse du catalogue et le message courant ;
+- **Contrôleur (`C`)** : charge tous les produits et modifie le tri ;
+- **Vue (`V`)** : compose la barre d'outils, la grille et les messages à partir
+  de l'état reçu en paramètre.
 
 Après une action importante, la page est reconstruite depuis l'état du modèle.
 Cela évite de disperser des modifications DOM dans les gestionnaires
@@ -209,12 +209,11 @@ Les composants actuellement présents sont :
 | Composant | Fonction |
 |---|---|
 | `header` | navigation, lien vers l'administration et changement de thème |
-| `barre-outils` | sélection du tri et du nombre de films par page |
-| `carte-film` | affichage d'un film |
-| `grille-films` | composition des cartes du catalogue |
+| `barre-outils` | sélection du tri (nom, prix croissant, prix décroissant) |
+| `carte-produit` | affichage d'un produit : image, catégorie, nom, prix, stock |
+| `grille-produits` | composition des cartes du catalogue, ou état vide |
 | `formulaire-connexion` | saisie et envoi des identifiants |
 | `message` | états de succès, d'erreur ou d'information |
-| `pagination` | navigation entre les pages du catalogue |
 | `statistiques` | synthèse des statistiques et répartition par genre |
 
 Un composant UI reçoit ses données et ses callbacks depuis la page. Il ne doit
@@ -228,7 +227,7 @@ orientée API. Ils ne touchent pas au DOM.
 
 | Module | Appels actuels |
 |---|---|
-| [`film.js`](./front/src/data/film.js) | `GET /api/films` avec page, tri et nombre d'éléments |
+| [`produit.js`](./front/src/data/produit.js) | `GET /api/produits` avec tri facultatif |
 | [`auth.js`](./front/src/data/auth.js) | `POST /api/login` et `POST /api/logout` |
 | [`stats.js`](./front/src/data/stats.js) | `GET /api/admin/stats` |
 
@@ -246,7 +245,7 @@ techniques partagées :
 | `router.js` | routes, layouts, navigation sans rechargement, paramètres et 404 |
 | `api-request.js` | requêtes HTTP JSON et erreurs contenant le statut HTTP |
 | `utils.js` | échappement HTML, rendu de placeholders et conversion en fragment |
-| `format.js` | formatage des durées, notes et teintes déterministes |
+| `format.js` | formatage des prix en euros, et des durées et notes (statistiques) |
 | `theme.js` | bascule clair/sombre et sauvegarde dans `localStorage` |
 
 `utils.js` joue un rôle de sécurité important : les valeurs remplacées dans
@@ -274,16 +273,17 @@ pas de la session PHP.
 ```text
 Route /
   -> CataloguePage
-  -> FilmData.fetchPage()
+  -> ProduitData.fetchAll()
   -> lib/api-request.js
-  -> GET /api/films
+  -> GET /api/produits
   -> modèle de la page
-  -> barre d'outils + grille + pagination
+  -> barre d'outils + grille de produits
 ```
 
-Le serveur renvoie les réglages effectivement appliqués, notamment le tri, le
-nombre d'éléments par page, la page courante et le nombre total de pages. Le
-front utilise cette réponse pour reconstruire l'affichage.
+Le serveur renvoie tous les produits, le tri effectivement appliqué et leur
+nombre total. Chaque produit porte son prix « à partir de » (variante la moins
+chère) et son stock cumulé. Le front utilise cette réponse pour reconstruire
+l'affichage ; pendant l'attente, la page affiche un état de chargement.
 
 ### 5.2 Connexion et statistiques
 
@@ -311,13 +311,14 @@ Les routes API déclarées dans
 
 | Méthode | Route | Contrôleur |
 |---|---|---|
-| `GET` | `/api/films` | `CatalogueController` |
+| `GET` | `/api/produits` | `CatalogueController` |
 | `POST` | `/api/login` | `AuthController` |
 | `POST` | `/api/logout` | `AuthController` |
 | `GET` | `/api/admin/stats` | `StatsController` |
 
-Le modèle métier actuellement utilisé est encore `FilmModel`. Les évolutions
-vers les produits, variantes, stocks, paniers et commandes devront donc
+Le catalogue utilise `ProduitModel` (produits, catégories, variantes). Seules
+les statistiques d'administration s'appuient encore sur `FilmModel`, à remplacer
+avec `GOF-b` / `PIL-a`. Les évolutions vers les paniers et commandes devront
 modifier de façon coordonnée le SQL, les modèles, les contrôleurs, les routes,
 les modules `data/` et les pages concernées.
 
@@ -376,7 +377,7 @@ Avant de considérer une modification front terminée :
 | Page blanche ou assets en 404 | vérifier `base` dans `vite.config.js` et relancer `npm run build` |
 | Route `/admin` inaccessible après rechargement | vérifier que `base/.htaccess` renvoie les routes front vers `front/dist/index.html` |
 | API en 404 en développement | vérifier le proxy Vite et la disponibilité du back sur `mmi.unilim.fr` |
-| Catalogue impossible à charger | vérifier `base/back/config/config.php`, la connexion MySQL et `sql/import.sql` |
+| Catalogue impossible à charger | vérifier `base/back/config/config.php`, la connexion MySQL et l'import de `sql/schema.sql` puis `sql/seeds.sql` |
 | Session ou préférences non conservées | vérifier la cohérence entre `BASE` et `chemin` |
 | Statistiques refusées | vérifier la session et laisser le serveur décider des droits `401`/`403` |
 

@@ -24,15 +24,8 @@ export function formaterNote(note) {
 }
 
 /**
- * Calcule une teinte stable à partir d'une chaîne, pour donner à chaque film un
- * visuel qui lui est propre sans charger la moindre image.
+ * 659 -> « 659,00 € » (format français, espace insécable avant le symbole)
  */
-export function teinteDepuisTexte(texte) {
-  let somme = 0;
-
-  for (const caractere of texte) {
-    somme += caractere.codePointAt(0);
-  }
-
-  return somme % 360;
+export function formaterPrix(montant) {
+  return new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(montant);
 }

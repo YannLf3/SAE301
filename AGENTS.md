@@ -36,6 +36,8 @@ configurations et les sous-dossiers, avant une modification structurante.
   Toute fonction, méthode ou classe publique doit être documentée en JSDoc ou
   PHPDoc.
 - JAMAIS DE foreach.
+- JAMAIS DE fn en php toujours des function classiques simples.
+- JAMAIS de fonctions fléchées (`=>`) en JavaScript : toujours des `function` classiques.
 - Les noms de méthodes et variables sont en anglais dans le code ; les données
   métier et commentaires pédagogiques peuvent rester en français comme dans
   l'existant.

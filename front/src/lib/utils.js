@@ -28,7 +28,9 @@ let genericRenderer = function (template, data) {
   for (let key in data) {
     // Une fonction, et non une chaîne, comme valeur de remplacement : dans une
     // chaîne, replaceAll interpréterait les séquences spéciales comme « $& ».
-    html = html.replaceAll(`{{${key}}}`, () => escapeHtml(data[key]));
+    html = html.replaceAll(`{{${key}}}`, function () {
+      return escapeHtml(data[key]);
+    });
   }
   return html;
 };

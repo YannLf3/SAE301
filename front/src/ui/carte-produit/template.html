@@ -1,0 +1,22 @@
+<article class="relative flex flex-col overflow-hidden rounded-ui-12 border border-border-default bg-surface-card transition-shadow hover:shadow-md">
+  <div class="aspect-4/3 bg-surface-subtle">
+    <img
+      src="{{image}}"
+      alt="{{nom}}"
+      width="800"
+      height="600"
+      loading="lazy"
+      decoding="async"
+      class="size-full object-contain p-ui-16"
+    />
+  </div>
+
+  <div class="flex flex-1 flex-col gap-ui-6 p-card-padding">
+    <p class="text-caption text-text-muted">{{categorie}}</p>
+    <h2 class="text-heading-sm font-medium text-text-primary">
+      <a href="/produits/{{slug}}" data-link class="after:absolute after:inset-0 focus-visible:outline-2 focus-visible:outline-border-focus">{{nom}}</a>
+    </h2>
+    <p class="mt-auto pt-ui-8 text-body font-semibold text-text-primary">{{prix}}</p>
+    <p data-role="stock" class="text-label font-medium">{{stock}}</p>
+  </div>
+</article>

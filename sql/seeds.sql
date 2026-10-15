@@ -75,7 +75,25 @@ INSERT INTO produit (id, categorie_id, slug, nom, description, image_url) VALUES
 
     (9, 3, 'dji-avata-explorer', 'DJI Avata Explorer',
      'Pack dynamique prêt à voler pour le vol en immersion haute vitesse avec retour vidéo ultra-faible latence.',
-     'images/drones/dji-avata-explorer.jpg');
+     'images/drones/dji-avata-explorer.jpg'),
+
+    -- Produits complémentaires (DoD DEC-b : 3 catégories de 4 produits).
+    -- Image provisoire commune, à remplacer par les visuels officiels.
+    (10, 2, 'dji-mavic-3-classic', 'DJI Mavic 3 Classic',
+     'Caméra Hasselblad 4/3 CMOS 20 MP et 46 min d''autonomie pour la photographie et la vidéo aérienne exigeante.',
+     'images/drones/placeholder.svg'),
+
+    (11, 2, 'dji-matrice-30t', 'DJI Matrice 30T',
+     'Drone d''entreprise robuste avec caméra thermique, zoom hybride et télémètre laser pour l''inspection et la sécurité.',
+     'images/drones/placeholder.svg'),
+
+    (12, 3, 'dji-fpv', 'DJI FPV',
+     'Drone FPV haute vitesse jusqu''à 140 km/h, avec casque immersif et manette de mouvement.',
+     'images/drones/placeholder.svg'),
+
+    (13, 3, 'dji-avata', 'DJI Avata',
+     'Drone FPV compact à hélices protégées, conçu pour le vol acrobatique en immersion.',
+     'images/drones/placeholder.svg');
 
 -- ---------------------------------------------------------------------------
 -- 4. Variantes (prix et stock portés par chaque variante)
@@ -116,7 +134,21 @@ INSERT INTO variante (id, produit_id, nom_option, prix_ttc, stock) VALUES
     (17, 8, 'Pack Fly More Combo (3 batteries)',                1199.00,  0), -- Rupture de stock test
 
     -- Variantes DJI Avata Explorer (produit 9)
-    (18, 9, 'Pack Explorer (Goggles Integra + RC Motion 2)',     899.00,  5);
+    (18, 9, 'Pack Explorer (Goggles Integra + RC Motion 2)',     899.00,  5),
+
+    -- Variantes DJI Mavic 3 Classic (produit 10)
+    (19, 10, 'Avec radiocommande DJI RC-N1',                    1749.00,  5),
+    (20, 10, 'Pack Fly More Combo (DJI RC)',                    2199.00,  3),
+
+    -- Variantes DJI Matrice 30T (produit 11)
+    (21, 11, 'Combo Entreprise (caméra thermique)',            10999.00,  2),
+
+    -- Variantes DJI FPV (produit 12)
+    (22, 12, 'Combo FPV (Goggles V2 + Motion Controller)',      1299.00,  4),
+
+    -- Variantes DJI Avata (produit 13)
+    (23, 13, 'Pack Pro-View (Goggles 2)',                       1199.00,  3),
+    (24, 13, 'Pack Pro-View Fly More Combo',                    1499.00,  2);
 
 -- ---------------------------------------------------------------------------
 -- 5. Journal des stocks (initialisation d'audit)
@@ -137,4 +169,10 @@ INSERT INTO journal_stock (variante_id, commande_id, type_mouvement, quantite_de
     (14, NULL, 'reassort', 1,  NOW()),
     (15, NULL, 'reassort', 4,  NOW()),
     (16, NULL, 'reassort', 6,  NOW()),
-    (18, NULL, 'reassort', 5,  NOW());
+    (18, NULL, 'reassort', 5,  NOW()),
+    (19, NULL, 'reassort', 5,  NOW()),
+    (20, NULL, 'reassort', 3,  NOW()),
+    (21, NULL, 'reassort', 2,  NOW()),
+    (22, NULL, 'reassort', 4,  NOW()),
+    (23, NULL, 'reassort', 3,  NOW()),
+    (24, NULL, 'reassort', 2,  NOW());
