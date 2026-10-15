@@ -1,15 +1,67 @@
-<header class="sticky top-0 z-10 border-b border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">
-  <div class="mx-auto flex max-w-5xl flex-wrap items-center gap-6 px-6 py-3">
-    <a href="/" data-link class="text-[0.95rem] font-semibold tracking-tight">SAE301-Starter</a>
+<header class="sticky top-0 z-30 w-full border-b border-border-default bg-surface-default/95 backdrop-blur-md transition-colors">
+  <div class="mx-auto flex max-w-7xl items-center justify-between px-page-gutter py-3">
+    <!-- Logo & Marque DJI Click & Collect -->
+    <div class="flex items-center gap-3">
+      <a href="/" data-link class="group flex items-center gap-2 focus-visible:outline-none" aria-label="Accueil DJI Store">
+        <span class="text-xl font-black tracking-widest text-text-primary transition-colors group-hover:text-text-brand">DJI</span>
+        <span class="hidden text-caption font-semibold tracking-wider text-text-muted uppercase sm:inline-block border-l border-border-default pl-2">
+          Click &amp; Collect
+        </span>
+      </a>
+    </div>
 
-    <!-- Le routeur pose aria-current="page" sur le lien de la page affichée. -->
-    <nav class="mr-auto flex gap-5 text-sm">
-      <a href="/" data-link class="text-zinc-500 transition-colors hover:text-zinc-950 aria-[current=page]:font-medium aria-[current=page]:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-50 dark:aria-[current=page]:text-zinc-50">Catalogue</a>
-      <a href="/admin" data-link class="text-zinc-500 transition-colors hover:text-zinc-950 aria-[current=page]:font-medium aria-[current=page]:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-50 dark:aria-[current=page]:text-zinc-50">Administration</a>
+    <!-- Navigation principale Desktop -->
+    <nav class="hidden md:flex items-center gap-8 text-label font-medium" aria-label="Navigation principale">
+      <a href="/" data-link class="text-text-secondary transition-colors hover:text-text-brand aria-[current=page]:text-text-primary aria-[current=page]:font-semibold">
+        Catalogue
+      </a>
+      <a href="/#categories" data-link class="text-text-secondary transition-colors hover:text-text-brand">
+        Catégories
+      </a>
+      <a href="/admin" data-link class="text-text-secondary transition-colors hover:text-text-brand aria-[current=page]:text-text-primary aria-[current=page]:font-semibold">
+        Administration
+      </a>
     </nav>
 
-    <button type="button" data-action="theme" aria-label="Changer de thème" class="h-8 rounded-md border border-zinc-200 px-3 text-sm font-medium transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:hover:bg-zinc-800">
-      Thème
-    </button>
+    <!-- Raccourcis et Actions (Panier, Thème, Menu Mobile) -->
+    <div class="flex items-center gap-3">
+      <!-- Raccourci Panier Click & Collect -->
+      <a href="/panier" data-link class="relative flex items-center gap-2 rounded-ui-8 border border-border-default px-3 py-1.5 text-label font-medium text-text-primary transition-colors hover:border-border-strong hover:bg-surface-subtle" aria-label="Voir le panier">
+        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+        </svg>
+        <span class="hidden sm:inline">Panier</span>
+        <span data-slot="cart-count" class="rounded-full bg-brand-primary px-1.5 py-0.2 text-[0.7rem] font-bold text-white">0</span>
+      </a>
+
+      <!-- Bouton bascule de thème -->
+      <button type="button" data-action="theme" aria-label="Changer de thème" class="flex h-8 w-8 items-center justify-center rounded-ui-8 border border-border-default text-text-secondary transition-colors hover:bg-surface-subtle hover:text-text-primary">
+        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+        </svg>
+      </button>
+
+      <!-- Bouton Menu Hamburger (Mobile) -->
+      <button type="button" data-action="toggle-menu" aria-expanded="false" aria-controls="mobile-nav" aria-label="Ouvrir le menu" class="flex h-8 w-8 items-center justify-center rounded-ui-8 border border-border-default text-text-secondary transition-colors hover:bg-surface-subtle md:hidden">
+        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Menu déroulant Mobile -->
+  <div id="mobile-nav" class="hidden border-t border-border-default bg-surface-default px-page-gutter py-4 md:hidden">
+    <nav class="flex flex-col gap-3 text-body font-medium" aria-label="Navigation mobile">
+      <a href="/" data-link class="rounded-ui-8 px-3 py-2 text-text-secondary transition-colors hover:bg-surface-subtle hover:text-text-primary aria-[current=page]:bg-surface-subtle aria-[current=page]:font-semibold aria-[current=page]:text-text-primary">
+        Catalogue
+      </a>
+      <a href="/#categories" data-link class="rounded-ui-8 px-3 py-2 text-text-secondary transition-colors hover:bg-surface-subtle hover:text-text-primary">
+        Catégories
+      </a>
+      <a href="/admin" data-link class="rounded-ui-8 px-3 py-2 text-text-secondary transition-colors hover:bg-surface-subtle hover:text-text-primary aria-[current=page]:bg-surface-subtle aria-[current=page]:font-semibold aria-[current=page]:text-text-primary">
+        Administration
+      </a>
+    </nav>
   </div>
 </header>

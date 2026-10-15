@@ -1,11 +1,11 @@
 ---
 trigger: glob
-globs: ["back/**/*.php"]
+globs: ["base/back/**/*.php"]
 ---
 
 # Règles PHP de l'API
 
-- Conserver `declare(strict_types=1)` et l'autoload de `back/index.php`.
+- Conserver `declare(strict_types=1)` et l'autoload de `base/back/index.php`.
 - Garder la séparation `Core/`, `Controller/`, `Model/` et `routes.php`.
 - Typer propriétés, paramètres et retours ; documenter les méthodes publiques
   en PHPDoc.

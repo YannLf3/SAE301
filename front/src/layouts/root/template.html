@@ -1,7 +1,17 @@
-<div class="min-h-screen">
+<div class="min-h-screen flex flex-col bg-surface-default text-text-primary antialiased">
   <slot name="header"></slot>
-  <main>
+  <main class="flex-1 w-full max-w-7xl mx-auto px-page-gutter py-section-gap">
     <!-- Le slot sans nom reçoit la page affichée (voir lib/router.js). -->
     <slot></slot>
   </main>
+  <footer class="border-t border-border-default bg-surface-subtle py-8 text-caption text-text-muted">
+    <div class="max-w-7xl mx-auto px-page-gutter flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+      <div class="flex items-center gap-2">
+        <span class="font-bold tracking-widest text-text-primary">DJI STORE</span>
+        <span>— Click &amp; Collect</span>
+      </div>
+      <p>Projet académique SAE 301 — Boutique de drones</p>
+      <p>&copy; 2026 DJI Store France. Tous droits réservés.</p>
+    </div>
+  </footer>
 </div>

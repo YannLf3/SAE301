@@ -14,7 +14,7 @@ film par le domaine produit drone.
 
 Ne réorganise, ne renomme et ne déplace jamais un fichier existant sans demande
 explicite. Respecte l'architecture présente avant de proposer une évolution.
-Parcours l'intégralité du dépôt, y compris `front/`, `back/`, `sql/`, les
+Parcours l'intégralité du dépôt, y compris `front/`, `base/back/`, `sql/`, les
 configurations et les sous-dossiers, avant une modification structurante.
 
 ## 1. Règles d'exécution impératives
@@ -35,25 +35,29 @@ configurations et les sous-dossiers, avant une modification structurante.
 - Les commentaires expliquent uniquement l'intention d'un choix non évident.
   Toute fonction, méthode ou classe publique doit être documentée en JSDoc ou
   PHPDoc.
+- JAMAIS DE foreach.
 - Les noms de méthodes et variables sont en anglais dans le code ; les données
   métier et commentaires pédagogiques peuvent rester en français comme dans
   l'existant.
+- Pour chaque test que tu veux faire ou choses que tu veux vérifier : "cd front/ puis npm run dev puis ouverture du lien 'http://localhost:5174/~le-flohic4/SAE301/base/' grâce à la config vite.config.js tout fonctionne sur ce lien
 
 ## 2. Architecture actuelle à respecter
 
 Le dépôt est un full-stack sans framework applicatif :
 
-| Zone        | Rôle                                                                         | Emplacement |
-| ----------- | ---------------------------------------------------------------------------- | ----------- |
-| Front       | SPA Vite, Tailwind CSS 4, routeur client, pages et composants                | `front/`    |
-| Back        | API JSON PHP, routage, contrôleurs et accès PDO/MySQL                        | `back/`     |
-| Données     | Schéma et seeds SQL, à faire évoluer vers produits/variantes/stock/commandes | `sql/`      |
-| Entrée HTTP | Réécriture `/api/...` vers PHP et du reste vers `front/dist/`                | `.htaccess` |
+| Zone        | Rôle                                                                         | Emplacement      |
+| ----------- | ---------------------------------------------------------------------------- | ---------------- |
+| Front       | SPA Vite, Tailwind CSS 4, routeur client, pages et composants                | `front/`         |
+| Back        | API JSON PHP, routage, contrôleurs et accès PDO/MySQL                        | `base/back/`     |
+| Données     | Schéma et seeds SQL, à faire évoluer vers produits/variantes/stock/commandes | `sql/`           |
+| Entrée HTTP | Réécriture `/api/...` vers PHP et du reste vers `front/dist/`                | `base/.htaccess` |
 
 Le front conserve le découpage `layouts/`, `pages/`, `ui/`, `data/` et `lib/`.
 Le back conserve `Core/`, `Controller/`, `Model/`, `routes.php` et son point
-d'entrée `back/index.php`. Ne crée pas une nouvelle couche ou un nouveau
+d'entrée `base/back/index.php`. Ne crée pas une nouvelle couche ou un nouveau
 framework seulement pour contourner cette structure.
+
+Voir ARCHITECTURE.md
 
 ## 3. MVC strict
 
@@ -204,7 +208,7 @@ que le compilateur les détecte.
 ## 6. Back-end PHP
 
 - `declare(strict_types=1)` dans chaque fichier PHP.
-- Conserve `back/index.php` comme point d'entrée unique : autoload,
+- Conserve `base/back/index.php` comme point d'entrée unique : autoload,
   configuration, connexion, session, contrôleurs et routeur.
 - Les contrôleurs valident la requête et orchestrent ; les modèles interrogent
   la base ; `Core/` contient les abstractions HTTP, DB et routage.
@@ -283,3 +287,12 @@ Toujours à la fin de chaque requête, vérifier le découpage : `node .agents/s
 
 Toute documentation générée doit être pédagogique : sections numérotées,
 tableaux récapitulatifs, check-lists et diagnostic
+
+## 11. Après chaque modifications
+
+Fournis un résumé clair et epxliqué avec :
+
+1. la liste des fichier modifiés, créés ou supprimés avec leur chemin d'accès
+2. le détail des modifications apportées avec les lignes
+3. les éventuels points d'attention et/ou étapes suivantes recommandées en respectant toujours l'ordre qui doit être suivi
+4. les éventuels impacts sur le reste de l'application

@@ -1,48 +1,371 @@
 @import "tailwindcss";
 
-/*
-  Le thème sombre s'active par la classe theme-dark posée sur <html> (voir
-  index.html et lib/theme.js), et non par le réglage du système : c'est ce que
-  déclare cette variante. Une classe préfixée par dark: s'applique donc dès que
-  la page est en thème sombre.
-*/
-@custom-variant dark (&:where(.theme-dark, .theme-dark *));
+/* ==========================================================================
+   1. Variantes personnalisées (thèmes Figma)
+   ========================================================================== */
+@custom-variant theme-desktop (&:where([data-theme="Desktop"] *));
+@custom-variant theme-mobile (&:where([data-theme="Mobile"] *));
+@custom-variant theme-tablette (&:where([data-theme="Tablette"] *));
 
-/*
-  Bandeau des cartes de film : un dégradé dont la teinte est calculée à partir
-  du titre (voir ui/carte-film/index.js). La teinte arrive par la variable
-  --teinte, posée dans le template. Aucune image n'est chargée.
-*/
-@utility bandeau-clair {
-  background-image: linear-gradient(
-    160deg,
-    hsl(var(--teinte) 28% 96%),
-    hsl(calc(var(--teinte) + 25) 28% 91%)
-  );
+/* ==========================================================================
+   2. @theme inline : expose les variables CSS comme utilitaires Tailwind
+   (ex. bg-surface-card, text-text-primary, p-page-gutter, rounded-ui-8)
+   ========================================================================== */
+@theme inline {
+  /* --- Couleurs primitives --- */
+  --color-black: var(--clr-black);
+  --color-white: var(--clr-white);
+  --color-neutral-950: var(--clr-neutral-950);
+  --color-neutral-900: var(--clr-neutral-900);
+  --color-neutral-850: var(--clr-neutral-850);
+  --color-neutral-800: var(--clr-neutral-800);
+  --color-neutral-800-alt: var(--clr-neutral-800-alt);
+  --color-neutral-700: var(--clr-neutral-700);
+  --color-neutral-650: var(--clr-neutral-650);
+  --color-neutral-600: var(--clr-neutral-600);
+  --color-neutral-500: var(--clr-neutral-500);
+  --color-neutral-450: var(--clr-neutral-450);
+  --color-neutral-400: var(--clr-neutral-400);
+  --color-neutral-100: var(--clr-neutral-100);
+  --color-neutral-75: var(--clr-neutral-75);
+  --color-neutral-50: var(--clr-neutral-50);
+  --color-cool-neutral-100: var(--clr-cool-neutral-100);
+  --color-cool-neutral-50: var(--clr-cool-neutral-50);
+  --color-warm-neutral-100: var(--clr-warm-neutral-100);
+  --color-blue-700: var(--clr-blue-700);
+  --color-blue-600: var(--clr-blue-600);
+  --color-red-700: var(--clr-red-700);
+  --color-red-600: var(--clr-red-600);
+  --color-vert: var(--clr-vert);
+  --color-orange: var(--clr-orange);
+  --color-brand-primary: var(--clr-brand-primary);
+  --color-brand-accent: var(--clr-brand-accent);
+
+  /* --- Couleurs sémantiques --- */
+  --color-text-primary: var(--clr-text-primary);
+  --color-text-secondary: var(--clr-text-secondary);
+  --color-text-muted: var(--clr-text-muted);
+  --color-text-inverse: var(--clr-text-inverse);
+  --color-text-brand: var(--clr-text-brand);
+  --color-text-error: var(--clr-text-error);
+  --color-text-disabled: var(--clr-text-disabled);
+  --color-surface-default: var(--clr-surface-default);
+  --color-surface-subtle: var(--clr-surface-subtle);
+  --color-surface-card: var(--clr-surface-card);
+  --color-surface-brand: var(--clr-surface-brand);
+  --color-surface-disabled: var(--clr-surface-disabled);
+  --color-border-default: var(--clr-border-default);
+  --color-border-subtle: var(--clr-border-subtle);
+  --color-border-strong: var(--clr-border-strong);
+  --color-border-focus: var(--clr-border-focus);
+  --color-border-error: var(--clr-border-error);
+  --color-action-primary-bg: var(--clr-action-primary-bg);
+  --color-action-primary-text: var(--clr-action-primary-text);
+  --color-action-secondary-bg: var(--clr-action-secondary-bg);
+  --color-action-secondary-text: var(--clr-action-secondary-text);
+  --color-action-hover: var(--clr-action-hover);
+  --color-action-danger-hover: var(--clr-action-danger-hover);
+  --color-status-danger-bg: var(--clr-status-danger-bg);
+  --color-status-danger-text: var(--clr-status-danger-text);
+  --color-status-stock: var(--clr-status-stock);
+  --color-status-alerte-stock: var(--clr-status-alerte-stock);
+  --color-status-danger-stock: var(--clr-status-danger-stock);
+  --color-status-pending: var(--clr-status-pending);
+  --color-status-confirmed: var(--clr-status-confirmed);
+  --color-status-cancelled: var(--clr-status-cancelled);
+
+  /* --- Espacements (échelle UI + espacements de mise en page) --- */
+  --spacing-ui-2: var(--space-ui-2);
+  --spacing-ui-4: var(--space-ui-4);
+  --spacing-ui-5: var(--space-ui-5);
+  --spacing-ui-6: var(--space-ui-6);
+  --spacing-ui-7: var(--space-ui-7);
+  --spacing-ui-8: var(--space-ui-8);
+  --spacing-ui-10: var(--space-ui-10);
+  --spacing-ui-12: var(--space-ui-12);
+  --spacing-ui-14: var(--space-ui-14);
+  --spacing-ui-16: var(--space-ui-16);
+  --spacing-ui-18: var(--space-ui-18);
+  --spacing-ui-20: var(--space-ui-20);
+  --spacing-ui-24: var(--space-ui-24);
+  --spacing-ui-28: var(--space-ui-28);
+  --spacing-ui-32: var(--space-ui-32);
+  --spacing-ui-40: var(--space-ui-40);
+  --spacing-ui-48: var(--space-ui-48);
+  --spacing-ui-64: var(--space-ui-64);
+  --spacing-page-gutter: var(--space-page-gutter);
+  --spacing-section-gap: var(--space-section-gap);
+  --spacing-card-padding: var(--space-card-padding);
+  --spacing-grid-gap: var(--space-grid-gap);
+  --spacing-form-gap: var(--space-form-gap);
+  --spacing-button-padding: var(--space-button-padding);
+
+  /* --- Rayons --- */
+  --radius-ui-2: var(--rad-2);
+  --radius-ui-3: var(--rad-3);
+  --radius-ui-4: var(--rad-4);
+  --radius-ui-6: var(--rad-6);
+  --radius-ui-8: var(--rad-8);
+  --radius-ui-12: var(--rad-12);
+  --radius-ui-14: var(--rad-14);
+  --radius-ui-20: var(--rad-20);
+  --radius-ui-22: var(--rad-22);
+
+  /* --- Typographie (utilitaires text-caption, text-body, text-page-title…) --- */
+  --text-caption: var(--fs-caption);
+  --text-caption--line-height: var(--lh-caption);
+  --text-label: var(--fs-label);
+  --text-label--line-height: var(--lh-label);
+  --text-body: var(--fs-body);
+  --text-body--line-height: var(--lh-body);
+  --text-lead: var(--fs-lead);
+  --text-lead--line-height: var(--lh-lead);
+  --text-heading-sm: var(--fs-heading-sm);
+  --text-heading-sm--line-height: var(--lh-heading-sm);
+  --text-heading-md: var(--fs-heading-md);
+  --text-heading-md--line-height: var(--lh-heading-md);
+  --text-heading-lg: var(--fs-heading-lg);
+  --text-heading-lg--line-height: var(--lh-heading-lg);
+  --text-page-title: var(--fs-page-title);
+  --text-page-title--line-height: var(--lh-page-title);
+  --text-metric: var(--fs-metric);
+  --text-metric--line-height: var(--lh-metric);
 }
 
-@utility bandeau-sombre {
-  background-image: linear-gradient(
-    160deg,
-    hsl(var(--teinte) 18% 17%),
-    hsl(calc(var(--teinte) + 25) 18% 12%)
-  );
-}
-
+/* ==========================================================================
+   3. Tokens : primitifs (valeurs brutes) puis sémantiques (usage)
+   Les valeurs responsives sont définies Mobile First (base = mobile,
+   puis tablette ≥ 48rem, puis desktop ≥ 64rem).
+   ========================================================================== */
 @layer base {
-  /* Menus déroulants et barres de défilement natifs, eux aussi en sombre. */
-  .theme-dark {
-    color-scheme: dark;
+  :root {
+    /* ---------- 3.1 Primitifs : couleurs ---------- */
+    --clr-black: oklch(0% 0 0);
+    --clr-white: oklch(100% 0 0);
+    --clr-neutral-950: oklch(11.9% 0.005 17.9);
+    --clr-neutral-900: oklch(27.3% 0 89.9);
+    --clr-neutral-850: oklch(31.6% 0.0033 228.9);
+    --clr-neutral-800: oklch(36.2% 0.0053 236.6);
+    --clr-neutral-800-alt: oklch(36.3% 0.0044 247.9);
+    --clr-neutral-700: oklch(45.4% 0.0061 228.9);
+    --clr-neutral-650: oklch(50.1% 0.0049 236.6);
+    --clr-neutral-600: oklch(54.3% 0.0068 239.9);
+    --clr-neutral-500: oklch(67% 0.0073 233.7);
+    --clr-neutral-450: oklch(68.3% 0 89.9);
+    --clr-neutral-400: oklch(71.3% 0.0063 239.9);
+    --clr-neutral-100: oklch(94.6% 0 89.9);
+    --clr-neutral-75: oklch(96.1% 0 89.9);
+    --clr-neutral-50: oklch(96.7% 0 89.9);
+    --clr-cool-neutral-100: oklch(94.5% 0.0101 238.5);
+    --clr-cool-neutral-50: oklch(98.1% 0.0025 228.8);
+    --clr-warm-neutral-100: oklch(94.9% 0.0013 106.4);
+    --clr-blue-700: oklch(42.9% 0.2973 264.1);
+    --clr-blue-600: oklch(50.6% 0.1206 260.8);
+    --clr-red-700: oklch(48.9% 0.1814 24.8); /* survol des actions destructives */
+    --clr-red-600: oklch(55.7% 0.2102 25.7);
+    --clr-vert: oklch(61.5% 0.2003 141.7);
+    --clr-orange: oklch(71% 0.1667 59.3);
+    --clr-brand-primary: oklch(55.1% 0.1768 254.3);
+    --clr-brand-accent: oklch(65.1% 0.191 252.8);
+
+    /* ---------- 3.2 Primitifs : espacements, rayons, bordures (rem) ---------- */
+    --sp-2: 0.125rem;
+    --sp-4: 0.25rem;
+    --sp-5: 0.3125rem;
+    --sp-6: 0.375rem;
+    --sp-7: 0.4375rem;
+    --sp-8: 0.5rem;
+    --sp-10: 0.625rem;
+    --sp-12: 0.75rem;
+    --sp-14: 0.875rem;
+    --sp-16: 1rem;
+    --sp-18: 1.125rem;
+    --sp-20: 1.25rem;
+    --sp-24: 1.5rem;
+    --sp-28: 1.75rem;
+    --sp-32: 2rem;
+    --sp-40: 2.5rem;
+    --sp-48: 3rem;
+    --sp-64: 4rem;
+
+    --rad-2: 0.125rem;
+    --rad-3: 0.1875rem;
+    --rad-4: 0.25rem;
+    --rad-6: 0.375rem;
+    --rad-8: 0.5rem;
+    --rad-12: 0.75rem;
+    --rad-14: 0.875rem;
+    --rad-20: 1.25rem;
+    --rad-22: 1.375rem;
+
+    --border-w-1: 0.0625rem;
+    --border-w-2: 0.125rem;
+
+    /* ---------- 3.3 Primitifs : tailles de police et interlignes (rem) ---------- */
+    --fs-12: 0.75rem;
+    --fs-14: 0.875rem;
+    --fs-16: 1rem;
+    --fs-18: 1.125rem;
+    --fs-20: 1.25rem;
+    --fs-22: 1.375rem;
+    --fs-24: 1.5rem;
+    --fs-28: 1.75rem;
+    --fs-30: 1.875rem;
+    --fs-32: 2rem;
+    --fs-36: 2.25rem;
+    --fs-40: 2.5rem;
+    --fs-42: 2.625rem;
+
+    --lh-17: 1.0625rem;
+    --lh-20: 1.25rem;
+    --lh-22: 1.375rem;
+    --lh-25: 1.5625rem;
+    --lh-28: 1.75rem;
+    --lh-31: 1.9375rem;
+    --lh-34: 2.125rem;
+    --lh-39: 2.4375rem;
+    --lh-42: 2.625rem;
+    --lh-45: 2.8125rem;
+    --lh-50: 3.125rem;
+    --lh-56: 3.5rem;
+    --lh-59: 3.6875rem;
+
+    /* ---------- 3.4 Sémantiques : couleurs ---------- */
+    --clr-text-primary: var(--clr-neutral-900);
+    --clr-text-secondary: var(--clr-neutral-700);
+    --clr-text-muted: var(--clr-neutral-600);
+    --clr-text-inverse: var(--clr-white);
+    --clr-text-brand: var(--clr-brand-primary);
+    --clr-text-error: var(--clr-red-600);
+    --clr-text-disabled: var(--clr-neutral-500);
+
+    --clr-surface-default: var(--clr-white);
+    --clr-surface-subtle: var(--clr-cool-neutral-50);
+    --clr-surface-card: var(--clr-white);
+    --clr-surface-brand: var(--clr-brand-primary);
+    --clr-surface-disabled: var(--clr-neutral-100);
+
+    --clr-border-default: var(--clr-neutral-100);
+    --clr-border-subtle: var(--clr-neutral-50);
+    --clr-border-strong: var(--clr-neutral-400);
+    --clr-border-focus: var(--clr-brand-primary);
+    --clr-border-error: var(--clr-red-600);
+
+    --clr-action-primary-bg: var(--clr-brand-primary);
+    --clr-action-primary-text: var(--clr-white);
+    --clr-action-secondary-bg: var(--clr-cool-neutral-100);
+    --clr-action-secondary-text: var(--clr-neutral-900);
+    --clr-action-hover: var(--clr-blue-600);
+    --clr-action-danger-hover: var(--clr-red-700);
+
+    --clr-status-danger-bg: var(--clr-red-600);
+    --clr-status-danger-text: var(--clr-white);
+    --clr-status-stock: var(--clr-vert);
+    --clr-status-alerte-stock: var(--clr-orange);
+    --clr-status-danger-stock: var(--clr-red-600);
+    --clr-status-pending: var(--clr-orange);
+    --clr-status-confirmed: var(--clr-vert);
+    --clr-status-cancelled: var(--clr-neutral-500);
+
+    /* ---------- 3.5 Sémantiques : espacements (valeurs mobile) ---------- */
+    --space-ui-2: var(--sp-2);
+    --space-ui-4: var(--sp-4);
+    --space-ui-5: var(--sp-5);
+    --space-ui-6: var(--sp-6);
+    --space-ui-7: var(--sp-7);
+    --space-ui-8: var(--sp-8);
+    --space-ui-10: var(--sp-10);
+    --space-ui-12: var(--sp-12);
+    --space-ui-14: var(--sp-14);
+    --space-ui-16: var(--sp-16);
+    --space-ui-18: var(--sp-18);
+    --space-ui-20: var(--sp-16);
+    --space-ui-24: var(--sp-16);
+    --space-ui-28: var(--sp-20);
+    --space-ui-32: var(--sp-24);
+    --space-ui-40: var(--sp-24);
+    --space-ui-48: var(--sp-32);
+    --space-ui-64: var(--sp-32);
+
+    --space-page-gutter: var(--sp-20);
+    --space-section-gap: var(--sp-32);
+    --space-card-padding: var(--sp-16);
+    --space-grid-gap: var(--sp-16);
+    --space-form-gap: var(--sp-16);
+    --space-button-padding: var(--sp-24);
+
+    /* ---------- 3.6 Sémantiques : typographie (valeurs mobile) ---------- */
+    --fs-caption: var(--fs-12);
+    --lh-caption: var(--lh-17);
+    --fs-label: var(--fs-14);
+    --lh-label: var(--lh-20);
+    --fs-body: var(--fs-16);
+    --lh-body: var(--lh-22);
+    --fs-lead: var(--fs-16);
+    --lh-lead: var(--lh-22);
+    --fs-heading-sm: var(--fs-18);
+    --lh-heading-sm: var(--lh-25);
+    --fs-heading-md: var(--fs-22);
+    --lh-heading-md: var(--lh-31);
+    --fs-heading-lg: var(--fs-28);
+    --lh-heading-lg: var(--lh-39);
+    --fs-page-title: var(--fs-28);
+    --lh-page-title: var(--lh-39);
+    --fs-metric: var(--fs-32);
+    --lh-metric: var(--lh-45);
   }
 
-  /* Un seul anneau de focus pour toute l'application, visible uniquement au
-     clavier : :focus-visible ne se déclenche pas sur un clic de souris. */
-  :where(a, button, select, input):focus-visible {
-    outline: 2px solid var(--color-zinc-400);
-    outline-offset: 2px;
+  /* ---------- 3.7 Tablette (≥ 48rem) ---------- */
+  @media (min-width: 48rem) {
+    :root {
+      --space-ui-28: var(--sp-24);
+      --space-ui-32: var(--sp-28);
+      --space-ui-40: var(--sp-32);
+      --space-ui-48: var(--sp-40);
+      --space-ui-64: var(--sp-48);
+
+      --space-page-gutter: var(--sp-32);
+      --space-card-padding: var(--sp-20);
+      --space-grid-gap: var(--sp-20);
+
+      --fs-heading-lg: var(--fs-30);
+      --lh-heading-lg: var(--lh-42);
+      --fs-page-title: var(--fs-36);
+      --lh-page-title: var(--lh-50);
+      --fs-metric: var(--fs-36);
+      --lh-metric: var(--lh-50);
+    }
   }
 
-  button:not(:disabled) {
-    cursor: pointer;
+  /* ---------- 3.8 Desktop (≥ 64rem) ---------- */
+  @media (min-width: 64rem) {
+    :root {
+      --space-ui-20: var(--sp-20);
+      --space-ui-24: var(--sp-24);
+      --space-ui-28: var(--sp-28);
+      --space-ui-32: var(--sp-32);
+      --space-ui-40: var(--sp-40);
+      --space-ui-48: var(--sp-48);
+      --space-ui-64: var(--sp-64);
+
+      --space-page-gutter: var(--sp-64);
+      --space-section-gap: var(--sp-40);
+      --space-card-padding: var(--sp-24);
+      --space-grid-gap: var(--sp-24);
+      --space-form-gap: var(--sp-20);
+
+      --fs-lead: var(--fs-18);
+      --lh-lead: var(--lh-25);
+      --fs-heading-sm: var(--fs-20);
+      --lh-heading-sm: var(--lh-28);
+      --fs-heading-md: var(--fs-24);
+      --lh-heading-md: var(--lh-34);
+      --fs-heading-lg: var(--fs-32);
+      --lh-heading-lg: var(--lh-45);
+      --fs-page-title: var(--fs-42);
+      --lh-page-title: var(--lh-59);
+      --fs-metric: var(--fs-40);
+      --lh-metric: var(--lh-56);
+    }
   }
 }
