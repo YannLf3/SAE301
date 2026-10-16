@@ -1,30 +1,40 @@
+import { CategorieData } from "../../data/categorie.js";
 import { ProduitData } from "../../data/produit.js";
 import { htmlToFragment } from "../../lib/utils.js";
 import { BarreOutilsView } from "../../ui/barre-outils/index.js";
+import { EtapesRetraitView } from "../../ui/etapes-retrait/index.js";
+import { FiltresCategoriesView } from "../../ui/filtres-categories/index.js";
 import { GrilleProduitsView } from "../../ui/grille-produits/index.js";
 import { MessageView } from "../../ui/message/index.js";
 import template from "./template.html?raw";
 
 /**
- * Page « Catalogue » (DEC-b).
+ * Page « Catalogue » (DEC-b) et navigation par catégories (DEC-a).
  *
- * Tous les produits sont chargés d'un coup, sans pagination. Au premier
- * chargement, le serveur applique son tri par défaut ; ensuite, le tri choisi
- * accompagne chaque requête.
+ * Deux routes partagent cette page : « / » (tous les produits) et
+ * « /categories/:slug » (une catégorie). Les produits sont chargés d'un coup,
+ * sans pagination. Au premier chargement, le serveur applique son tri par
+ * défaut ; ensuite, le tri choisi accompagne chaque requête.
  */
 
 let M = {
   etat: "chargement", // "chargement" | "pret" | "erreur"
-  catalogue: null, // dernière réponse de l'API : { produits, tri, total }
+  categorie: null, // slug de la catégorie affichée, ou null pour tous les produits
+  catalogue: null, // dernière réponse de l'API : { produits, tri, categorie, total }
+  categories: null, // réponse de l'API des catégories : { categories, total }
   message: null, // { type, texte }, ou null
 };
 
 /**
  * . tri : critère de tri facultatif ("nom", "prix_asc", "prix_desc")
- * > rien ; range la réponse de l'API dans M.catalogue, ou lève l'erreur
+ * > rien ; range les réponses de l'API dans M.catalogue et M.categories, ou
+ *   lève l'erreur
  */
 M.load = async function (tri) {
-  M.catalogue = await ProduitData.fetchAll(tri);
+  // Les deux requêtes sont indépendantes : on les lance ensemble.
+  let reponses = await Promise.all([ProduitData.fetchAll(tri, M.categorie), CategorieData.fetchAll()]);
+  M.catalogue = reponses[0];
+  M.categories = reponses[1];
 };
 
 let C = {};
@@ -40,8 +50,15 @@ C.charger = async function (tri) {
     M.message = null;
   } catch (erreur) {
     M.catalogue = null;
+    M.categories = null;
     M.etat = "erreur";
-    M.message = { type: "erreur", texte: `Impossible de charger le catalogue : ${erreur.message}` };
+    M.message = {
+      type: "erreur",
+      texte:
+        erreur.statut === 404
+          ? "Cette catégorie n'existe pas. Choisissez-en une dans le menu."
+          : `Impossible de charger le catalogue : ${erreur.message}`,
+    };
   }
   V.rafraichir(M);
 };
@@ -50,7 +67,17 @@ C.handler_changerTri = async function (tri) {
   await C.charger(tri);
 };
 
-C.init = function () {
+/**
+ * . params : paramètres de la route ({ slug } sur « /categories/:slug »)
+ */
+C.init = function (params) {
+  // Le module est partagé entre les visites : on repart d'un état neuf.
+  M.etat = "chargement";
+  M.categorie = params.slug ?? null;
+  M.catalogue = null;
+  M.categories = null;
+  M.message = null;
+
   // La page s'affiche tout de suite avec l'état « chargement », puis se
   // reconstruit quand la réponse de l'API arrive.
   let fragment = V.init(M);
@@ -97,21 +124,26 @@ V.createPageFragment = function (etat) {
 
   if (etat.etat !== "pret") {
     // Rien d'autre à afficher : on retire les emplacements restants.
+    pageFragment.querySelector('slot[name="filtres"]').remove();
     pageFragment.querySelector('slot[name="barre-outils"]').remove();
     pageFragment.querySelector('slot[name="grille"]').remove();
+    pageFragment.querySelector('slot[name="etapes"]').remove();
     pageFragment.firstElementChild.setAttribute("aria-busy", String(etat.etat === "chargement"));
     return pageFragment;
   }
+
+  pageFragment.querySelector('slot[name="filtres"]').replaceWith(FiltresCategoriesView.dom(etat.categories));
 
   pageFragment.querySelector('slot[name="barre-outils"]').replaceWith(
     BarreOutilsView.dom(etat.catalogue, { surTri: C.handler_changerTri })
   );
 
   pageFragment.querySelector('slot[name="grille"]').replaceWith(GrilleProduitsView.dom(etat.catalogue.produits));
+  pageFragment.querySelector('slot[name="etapes"]').replaceWith(EtapesRetraitView.dom());
 
   return pageFragment;
 };
 
-export function CataloguePage() {
-  return C.init();
+export function CataloguePage(params) {
+  return C.init(params);
 }

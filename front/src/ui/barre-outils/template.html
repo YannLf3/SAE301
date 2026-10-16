@@ -1,12 +1,15 @@
-<div class="mb-ui-24 flex flex-wrap items-end gap-ui-16 rounded-ui-12 border border-border-default bg-surface-card p-ui-16">
-  <label class="flex flex-col gap-ui-8 text-label font-medium text-text-primary">
-    Trier par
-    <select name="tri" class="h-ui-40 min-w-44 rounded-ui-8 border border-border-strong bg-surface-default px-ui-12 font-normal text-text-primary transition-colors hover:border-border-focus">
-      <option value="nom">Nom (A → Z)</option>
-      <option value="prix_asc">Prix (croissant)</option>
-      <option value="prix_desc">Prix (décroissant)</option>
-    </select>
-  </label>
+<div class="mb-ui-24 flex flex-wrap items-center justify-between gap-x-ui-16 gap-y-ui-8">
+  <p role="status" class="text-label font-semibold text-text-primary">{{libelle}}</p>
 
-  <p role="status" class="ml-auto text-label text-text-muted">{{total}} produits</p>
+  <div class="flex items-center gap-ui-16">
+    <label class="flex items-center gap-ui-8 text-caption text-text-secondary">
+      Trier par
+      <select name="tri" class="h-ui-40 rounded-ui-8 border border-border-strong bg-surface-default px-ui-8 text-label text-text-primary transition-colors hover:border-border-focus focus-visible:outline-2 focus-visible:outline-border-focus">
+        <option value="nom">Nom (A → Z)</option>
+        <option value="prix_asc">Prix (croissant)</option>
+        <option value="prix_desc">Prix (décroissant)</option>
+      </select>
+    </label>
+    <p class="text-caption text-text-secondary">Prix TTC</p>
+  </div>
 </div>

@@ -45,6 +45,14 @@ class Router {
       e.preventDefault();
       router.navigate(router.routePath(lien.pathname));
     });
+
+    // Une page ou un layout se reconstruit parfois après sa première
+    // apparition (réponse de l'API reçue) : ses nouveaux liens n'ont alors ni
+    // adresse réelle ni aria-current. On les complète à chaque changement du
+    // DOM ; updateLinks ne modifie que des attributs, donc ne se redéclenche pas.
+    new MutationObserver(function () {
+      router.updateLinks(router.routePath(window.location.pathname));
+    }).observe(this.root, { childList: true, subtree: true });
   }
 
   // Enregistrer un layout pour un segment de route

@@ -24,8 +24,16 @@ export function formaterNote(note) {
 }
 
 /**
- * 659 -> « 659,00 € » (format français, espace insécable avant le symbole)
+ * 799 -> « 799 € », 1099 -> « 1 099 € », 12.5 -> « 12,50 € »
+ * (format français ; les centimes n'apparaissent que s'il y en a)
  */
 export function formaterPrix(montant) {
-  return new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(montant);
+  const entier = Number.isInteger(montant);
+
+  return new Intl.NumberFormat("fr-FR", {
+    style: "currency",
+    currency: "EUR",
+    minimumFractionDigits: entier ? 0 : 2,
+    maximumFractionDigits: 2,
+  }).format(montant);
 }

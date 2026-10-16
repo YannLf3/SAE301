@@ -1,12 +1,14 @@
 import { genericRenderer, htmlToFragment } from "../../lib/utils.js";
 import template from "./template.html?raw";
 
-// Barre de réglages du catalogue : critère de tri.
+// Barre de réglages du catalogue : nombre de produits et critère de tri.
 // Le composant ne décide de rien : il affiche les valeurs reçues, et signale
 // le changement par la fonction reçue dans actions.
 let BarreOutilsView = {
   html: function (data) {
-    return genericRenderer(template, data);
+    return genericRenderer(template, {
+      libelle: `${data.total} ${data.total > 1 ? "produits" : "produit"}`,
+    });
   },
 
   /**
