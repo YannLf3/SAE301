@@ -2,7 +2,7 @@
 
 ## 0. Mission du projet
 
-Ce dépôt est un prototype full-stack de site web responsive de click & collect
+Ce dépôt est un projet full-stack de site web responsive de click & collect
 de drones. Le code actuel est encore un catalogue de films pédagogique : il
 sert de base technique, mais le produit cible est une boutique de drones,
 d'accessoires et de variantes, inspirée du site [DJI France](https://www.dji.com/fr).
@@ -28,7 +28,7 @@ configurations et les sous-dossiers, avant une modification structurante.
   restent dans la configuration locale et ne doivent jamais être ajoutées au
   dépôt.
 - Avant une modification importante, lis les fichiers concernés et leurs
-  appelants. Après modification, valide le comportement avec les commandes
+  appelants. Propose moi toujours un plan d'implémentation. Après modification, valide le comportement avec les commandes
   adaptées.
 - Si deux architectures sont raisonnables et que le choix change fortement le
   code, arrête-toi et demande une décision.
@@ -39,13 +39,11 @@ configurations et les sous-dossiers, avant une modification structurante.
 - JAMAIS DE fn en php toujours des function classiques simples.
 - JAMAIS de fonctions fléchées (`=>`) en JavaScript : toujours des `function` classiques.
 - Les noms de méthodes et variables sont en anglais dans le code ; les données
-  métier et commentaires pédagogiques peuvent rester en français comme dans
+  et commentaires pédagogiques peuvent rester en français comme dans
   l'existant.
-- Pour chaque test que tu veux faire ou choses que tu veux vérifier : "cd front/ puis npm run dev puis ouverture du lien 'http://localhost:5174/~le-flohic4/SAE301/base/' grâce à la config vite.config.js tout fonctionne sur ce lien
+- Pour chaque test que tu veux faire ou choses que tu veux vérifier : "cd front/ puis npm run dev puis ouverture du lien 'http://localhost:5175/~le-flohic4/SAE301/base/' grâce à la config vite.config.js tout fonctionne sur ce lien
 
 ## 2. Architecture actuelle à respecter
-
-Le dépôt est un full-stack sans framework applicatif :
 
 | Zone        | Rôle                                                                         | Emplacement      |
 | ----------- | ---------------------------------------------------------------------------- | ---------------- |
@@ -59,7 +57,7 @@ Le back conserve `Core/`, `Controller/`, `Model/`, `routes.php` et son point
 d'entrée `base/back/index.php`. Ne crée pas une nouvelle couche ou un nouveau
 framework seulement pour contourner cette structure.
 
-Voir ARCHITECTURE.md
+Respect stricte de l'architecture obligatoire décrite dans ce fichier que tu liras : ARCHITECTURE.md
 
 ## 3. MVC strict
 
@@ -98,10 +96,12 @@ data (M) ----get----
 template (V) --get--
 ```
 
+Le MVC est à respecter strictement y compris dans la création des pages dans chaque fichier Javascript de chaque page.
+
 ### M — le Modèle : les données et leur manipulation
 
-- Contient les données de l'application (`M.characters`) et les fonctions qui les lisent,
-  filtrent ou transforment (`M.filterCharacters(byside)`).
+- Contient les données de l'application (`M.xxx`) et les fonctions qui les lisent,
+  filtrent ou transforment (`M.xxx(xx)`).
 - Ses fonctions reçoivent des valeurs simples en paramètre et **retournent des données**
   (tableaux, objets), jamais du HTML.
 - **Interdit :** toute référence à `V`, tout accès au DOM (`document`, `window`, éléments HTML,
@@ -157,7 +157,9 @@ template (V) --get--
 
 ## 5. Design responsive et direction artistique
 
-Le site cible reprend les principes visuels observables sur DJI France :
+Le site cible reprend les principes visuels observables sur DJI France mais en gardant sa touche personnelle :
+
+lien vers ma maquette figma : https://www.figma.com/design/5Ot7tScvEYz4YJ4SciXjQ5/LE-FLOHIC_Yann?node-id=18-2384&t=8avGZnMQjKYokH3Z-1
 
 - interface premium, sobre et orientée produit ;
 - navigation claire, barre supérieure compacte, menus utilisables au clavier ;
@@ -172,6 +174,8 @@ Le site cible reprend les principes visuels observables sur DJI France :
 - aucune largeur, image ou interaction ne doit casser entre 320 px et desktop ;
 - les images doivent prévoir `alt`, ratio, lazy-loading lorsque pertinent et
   état de chargement.
+
+Il doit se différencier du site de base de DJI.
 
 Le responsive est une contrainte fonctionnelle, pas une finition. Vérifie au
 minimum les vues à 320/375 px, 768 px et 1440 px lorsque l'UI est modifiée.

@@ -1,5 +1,7 @@
 import { genericRenderer, htmlToFragment } from "../../lib/utils.js";
 import { formaterPrix } from "../../lib/format.js";
+import { SelecteurQuantiteView } from "../selecteur-quantite/index.js";
+import templateBouton from "./bouton-ajout.html?raw";
 import template from "./template.html?raw";
 import templateVariante from "./variante.html?raw";
 
@@ -17,9 +19,12 @@ function colorerStock(element, disponible) {
 let DetailProduitView = {
   /**
    * . produit : fiche produit de l'API
+   * . panier : { quantites: { [variantId]: quantité au panier }, quantiteMax }
+   * . callbacks : { surAjout(variante), surQuantite(variante, quantite, action) } ;
+   *   une quantité de 0 retire la variante du panier
    * > fragment de la fiche, variantes comprises
    */
-  dom: function (produit) {
+  dom: function (produit, panier, callbacks) {
     let fragment = htmlToFragment(
       genericRenderer(template, {
         nom: produit.nom,
@@ -41,6 +46,35 @@ let DetailProduitView = {
         }),
       );
       colorerStock(ligne.querySelector('[data-role="stock"]'), variante.disponible);
+
+      let quantite = panier.quantites[variante.id] ?? 0;
+      let action;
+
+      if (quantite > 0) {
+        action = SelecteurQuantiteView.dom(
+          {
+            quantite: quantite,
+            minimum: 0,
+            maximum: panier.quantiteMax,
+            libelle: `Quantité de ${variante.nom_option} au panier`,
+          },
+          {
+            surQuantite: function (nouvelle, sens) {
+              callbacks.surQuantite(variante, nouvelle, sens);
+            },
+          },
+        );
+      } else {
+        action = htmlToFragment(genericRenderer(templateBouton, { nom_option: variante.nom_option }));
+        let bouton = action.firstElementChild;
+        bouton.disabled = !variante.disponible;
+        bouton.addEventListener("click", function () {
+          callbacks.surAjout(variante);
+        });
+      }
+
+      ligne.querySelector('slot[name="action"]').replaceWith(action);
+      ligne.firstElementChild.dataset.variantId = String(variante.id);
       return ligne;
     });
     fragment.querySelector('slot[name="variantes"]').replaceWith(...lignes);
