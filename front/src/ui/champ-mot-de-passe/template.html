@@ -1,0 +1,13 @@
+<div class="flex flex-col gap-ui-8">
+  <label for="{{id}}" class="text-label font-medium text-text-primary">Mot de passe</label>
+  <div class="relative">
+    <input id="{{id}}" name="mdp" type="password" required minlength="{{minimum}}" autocomplete="{{autocomplete}}" aria-describedby="{{id}}-aide" class="h-12 w-full rounded-ui-8 border border-border-default bg-surface-default pr-ui-48 pl-ui-16 text-body text-text-primary transition-colors hover:border-border-strong focus-visible:outline-2 focus-visible:outline-border-focus" />
+    <button type="button" data-action="afficher" aria-pressed="false" aria-label="Afficher le mot de passe" class="absolute inset-y-0 right-0 flex w-12 items-center justify-center rounded-ui-8 text-text-secondary hover:text-text-primary focus-visible:outline-2 focus-visible:outline-border-focus">
+      <svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z" />
+        <circle cx="12" cy="12" r="3" stroke-width="1.8" />
+      </svg>
+    </button>
+  </div>
+  <p id="{{id}}-aide" class="text-caption text-text-secondary">{{aide}}</p>
+</div>

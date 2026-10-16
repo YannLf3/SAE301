@@ -19,6 +19,8 @@ configurations et les sous-dossiers, avant une modification structurante.
 
 ## 1. Règles d'exécution impératives
 
+- À chaque fois que je te demande d'implémenter quelque chose, va regarder dans .agents sur des skills sont utiles pour la création : 'ajouter-composant', 'ajouter-fonctionnalite-mvc', 'ajouter-page' et 'verifier-mvc'.
+
 - Ne committe et ne pousse jamais automatiquement. Le commit, le push et toute
   action Git distante ne sont effectués que si l'utilisateur le demande
   explicitement.

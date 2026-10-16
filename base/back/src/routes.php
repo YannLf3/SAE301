@@ -22,6 +22,8 @@ return [
     'GET  /api/produit'     => [CatalogueController::class, 'show'],
     'GET  /api/categories'  => [CategorieController::class, 'index'],
     'POST /api/login'       => [AuthController::class,      'login'],
+    'POST /api/register'    => [AuthController::class,      'register'],
+    'GET  /api/me'          => [AuthController::class,      'me'],
     'POST /api/logout'      => [AuthController::class,      'logout'],
     'GET  /api/admin/stats' => [StatsController::class,     'index'],
 ];
