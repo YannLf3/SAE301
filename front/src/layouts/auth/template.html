@@ -1,0 +1,30 @@
+<div class="flex min-h-screen flex-col bg-surface-default text-text-primary antialiased">
+  <header class="border-b border-border-default bg-surface-default">
+    <div class="mx-auto flex h-16 max-w-360 items-center justify-between gap-ui-16 px-page-gutter lg:h-20">
+      <a
+        href="/"
+        data-link
+        aria-label="dji Click &amp; Collect, retour à l'accueil"
+        class="flex min-h-11 items-center gap-ui-12 rounded-ui-8 focus-visible:outline-2 focus-visible:outline-border-focus"
+      >
+        <span class="text-2xl font-semibold italic text-text-primary">dji</span>
+        <span class="text-caption text-text-secondary">Click &amp; Collect</span>
+      </a>
+      <p class="text-label text-text-primary">Accès sécurisé</p>
+    </div>
+  </header>
+  <main class="w-full flex-1">
+    <!-- Le slot sans nom reçoit la page affichée (voir lib/router.js). -->
+    <slot></slot>
+  </main>
+  <footer class="border-t border-border-default bg-surface-default py-ui-32 text-label text-text-secondary">
+    <div class="mx-auto flex max-w-360 flex-col gap-ui-12 px-page-gutter sm:flex-row sm:items-center sm:justify-between">
+      <ul class="flex flex-wrap gap-x-ui-24 gap-y-ui-8">
+        <li>Aide Click &amp; Collect</li>
+        <li>Conditions de retrait</li>
+        <li>Confidentialité</li>
+      </ul>
+      <a href="/admin" data-link class="underline-offset-4 hover:text-text-primary hover:underline focus-visible:outline-2 focus-visible:outline-border-focus">Connexion administrateur</a>
+    </div>
+  </footer>
+</div>

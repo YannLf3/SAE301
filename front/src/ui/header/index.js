@@ -9,15 +9,26 @@ import template from "./template.html?raw";
  */
 let HeaderView = {
   /**
-   * . data : { quantitePanier: number }
+   * . data : { quantitePanier: number, utilisateur: { prenom: string }|null }
+   * . callbacks : { surDeconnexion() }
    * > fragment contenant l'élément <header>
    */
-  dom: function (data) {
+  dom: function (data, callbacks) {
     let fragment = htmlToFragment(template);
 
     let lienPanier = fragment.querySelector('a[href="/panier"]');
     fragment.querySelector('[data-slot="cart-count"]').textContent = String(data.quantitePanier);
     lienPanier.setAttribute("aria-label", `Voir le panier, ${data.quantitePanier} article(s)`);
+
+    if (data.utilisateur !== null) {
+      let session = fragment.querySelector('[data-slot="session"]');
+      // textContent : le prénom saisi par l'utilisateur n'est jamais du HTML.
+      session.querySelector('[data-slot="prenom"]').textContent = data.utilisateur.prenom;
+      session.classList.remove("hidden");
+      session.classList.add("flex");
+      fragment.querySelector('[data-slot="connexion"]').remove();
+      session.querySelector('[data-action="deconnexion"]').addEventListener("click", callbacks.surDeconnexion);
+    }
 
     return fragment;
   },

@@ -26,9 +26,22 @@
 
     <!-- Compte et panier -->
     <div class="gap-ui-4 flex items-center">
+      <!-- Utilisateur connecté : prénom et déconnexion (affiché par HeaderView) -->
+      <div data-slot="session" class="gap-ui-4 hidden items-center">
+        <span data-slot="prenom" class="text-label text-text-primary px-ui-8 max-w-32 truncate"></span>
+        <button
+          type="button"
+          data-action="deconnexion"
+          class="rounded-ui-8 px-ui-8 text-label text-text-primary hover:text-text-brand focus-visible:outline-border-focus flex h-11 items-center transition-colors focus-visible:outline-2"
+        >
+          Se déconnecter
+        </button>
+      </div>
+
       <a
         href="/connexion"
         data-link
+        data-slot="connexion"
         aria-label="Se connecter"
         class="gap-ui-8 rounded-ui-8 px-ui-8 text-label text-text-primary hover:text-text-brand focus-visible:outline-border-focus flex h-11 items-center transition-colors focus-visible:outline-2"
       >

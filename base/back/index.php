@@ -23,6 +23,7 @@ use App\Controller\StatsController;
 use App\Model\CategorieModel;
 use App\Model\FilmModel;
 use App\Model\ProduitModel;
+use App\Model\UtilisateurModel;
 
 // --- Chargement automatique des classes ------------------------------------
 // App\Core\Router  ->  back/src/Core/Router.php
@@ -67,7 +68,7 @@ try {
     $controleurs = [
         CatalogueController::class => new CatalogueController(new ProduitModel($pdo), $modeleCategories),
         CategorieController::class => new CategorieController($modeleCategories),
-        AuthController::class      => new AuthController(),
+        AuthController::class      => new AuthController(new UtilisateurModel($pdo)),
         StatsController::class     => new StatsController(new FilmModel($pdo)),
     ];
 
