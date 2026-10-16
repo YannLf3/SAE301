@@ -123,6 +123,7 @@ front/src/
 │   ├── message/
 │   └── statistiques/
 ├── data/
+│   ├── categorie.js
 │   ├── produit.js
 │   ├── auth.js
 │   └── stats.js
@@ -143,7 +144,9 @@ Les routes actuellement disponibles sont :
 
 | Route front | Page |
 |---|---|
-| `/` | catalogue de produits |
+| `/` | catalogue de produits (tous) |
+| `/categories/:slug` | catalogue filtré par catégorie (DEC-a) |
+| `/produits/:slug` | fiche produit (DEC-c) |
 | `/admin` | connexion et statistiques d'administration |
 | toute route inconnue | page 404 |
 
@@ -227,7 +230,8 @@ orientée API. Ils ne touchent pas au DOM.
 
 | Module | Appels actuels |
 |---|---|
-| [`produit.js`](./front/src/data/produit.js) | `GET /api/produits` avec tri facultatif |
+| [`categorie.js`](./front/src/data/categorie.js) | `GET /api/categories` (catégories et effectifs) |
+| [`produit.js`](./front/src/data/produit.js) | `GET /api/produits` avec tri et catégorie facultatifs, `GET /api/produit` |
 | [`auth.js`](./front/src/data/auth.js) | `POST /api/login` et `POST /api/logout` |
 | [`stats.js`](./front/src/data/stats.js) | `GET /api/admin/stats` |
 
@@ -312,6 +316,7 @@ Les routes API déclarées dans
 | Méthode | Route | Contrôleur |
 |---|---|---|
 | `GET` | `/api/produits` | `CatalogueController` |
+| `GET` | `/api/categories` | `CategorieController` |
 | `POST` | `/api/login` | `AuthController` |
 | `POST` | `/api/logout` | `AuthController` |
 | `GET` | `/api/admin/stats` | `StatsController` |

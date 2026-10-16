@@ -12,6 +12,9 @@
    (ex. bg-surface-card, text-text-primary, p-page-gutter, rounded-ui-8)
    ========================================================================== */
 @theme inline {
+  /* --- Typographie : Open Sans, la police de la maquette Figma --- */
+  --font-sans: "Open Sans", ui-sans-serif, system-ui, sans-serif;
+
   /* --- Couleurs primitives --- */
   --color-black: var(--clr-black);
   --color-white: var(--clr-white);

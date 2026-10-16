@@ -18,7 +18,9 @@ use App\Core\Response;
 use App\Core\Router;
 use App\Controller\AuthController;
 use App\Controller\CatalogueController;
+use App\Controller\CategorieController;
 use App\Controller\StatsController;
+use App\Model\CategorieModel;
 use App\Model\FilmModel;
 use App\Model\ProduitModel;
 
@@ -60,8 +62,11 @@ try {
     // --- Assemblage ---------------------------------------------------------
     // Les dépendances sont créées explicitement : le modèle reçoit la connexion,
     // le contrôleur reçoit le modèle. Aucune magie, tout est lisible ici.
+    $modeleCategories = new CategorieModel($pdo);
+
     $controleurs = [
-        CatalogueController::class => new CatalogueController(new ProduitModel($pdo)),
+        CatalogueController::class => new CatalogueController(new ProduitModel($pdo), $modeleCategories),
+        CategorieController::class => new CategorieController($modeleCategories),
         AuthController::class      => new AuthController(),
         StatsController::class     => new StatsController(new FilmModel($pdo)),
     ];

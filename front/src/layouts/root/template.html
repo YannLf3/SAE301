@@ -1,17 +1,17 @@
-<div class="min-h-screen flex flex-col bg-surface-default text-text-primary antialiased">
+<div class="flex min-h-screen flex-col bg-surface-default text-text-primary antialiased">
   <slot name="header"></slot>
-  <main class="flex-1 w-full max-w-7xl mx-auto px-page-gutter py-section-gap">
+  <main class="w-full flex-1">
     <!-- Le slot sans nom reçoit la page affichée (voir lib/router.js). -->
     <slot></slot>
   </main>
-  <footer class="border-t border-border-default bg-surface-subtle py-8 text-caption text-text-muted">
-    <div class="max-w-7xl mx-auto px-page-gutter flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-      <div class="flex items-center gap-2">
-        <span class="font-bold tracking-widest text-text-primary">DJI STORE</span>
-        <span>— Click &amp; Collect</span>
-      </div>
-      <p>Projet académique SAE 301 — Boutique de drones</p>
-      <p>&copy; 2026 DJI Store France. Tous droits réservés.</p>
+  <footer class="border-t border-border-default bg-surface-default py-ui-32 text-label text-text-secondary">
+    <div class="mx-auto flex max-w-360 flex-col gap-ui-12 px-page-gutter sm:flex-row sm:items-center sm:justify-between">
+      <ul class="flex flex-wrap gap-x-ui-24 gap-y-ui-8">
+        <li>Aide Click &amp; Collect</li>
+        <li>Conditions de retrait</li>
+        <li>Confidentialité</li>
+      </ul>
+      <a href="/admin" data-link class="underline-offset-4 hover:text-text-primary hover:underline focus-visible:outline-2 focus-visible:outline-border-focus">Connexion administrateur</a>
     </div>
   </footer>
 </div>

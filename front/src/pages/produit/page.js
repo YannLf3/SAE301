@@ -1,6 +1,7 @@
 import { ProduitData } from "../../data/produit.js";
 import { htmlToFragment } from "../../lib/utils.js";
 import { DetailProduitView } from "../../ui/detail-produit/index.js";
+import { FilArianeView } from "../../ui/fil-ariane/index.js";
 import { MessageView } from "../../ui/message/index.js";
 import template from "./template.html?raw";
 
@@ -94,11 +95,13 @@ V.createPageFragment = function (etat) {
   pageFragment.querySelector('slot[name="message"]').replaceWith(MessageView.dom(message));
 
   if (etat.etat !== "pret") {
+    pageFragment.querySelector('slot[name="fil-ariane"]').remove();
     pageFragment.querySelector('slot[name="detail"]').remove();
     pageFragment.firstElementChild.setAttribute("aria-busy", String(etat.etat === "chargement"));
     return pageFragment;
   }
 
+  pageFragment.querySelector('slot[name="fil-ariane"]').replaceWith(FilArianeView.dom(etat.produit));
   pageFragment.querySelector('slot[name="detail"]').replaceWith(DetailProduitView.dom(etat.produit));
 
   return pageFragment;
