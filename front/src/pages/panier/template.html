@@ -1,0 +1,19 @@
+<section class="mx-auto max-w-360 px-page-gutter pt-ui-24 pb-ui-64 md:pt-ui-40" aria-labelledby="titre-panier">
+  <h1 id="titre-panier" class="text-page-title font-semibold text-text-primary">Votre panier</h1>
+  <p class="mt-ui-4 mb-ui-24 text-body text-text-secondary md:mb-ui-32">{{description}}</p>
+
+  <slot name="message"></slot>
+
+  <div class="grid items-start gap-ui-24 lg:grid-cols-[minmax(0,1fr)_24.375rem]">
+    <div class="flex flex-col gap-ui-16">
+      <slot name="articles"></slot>
+      <slot name="information"></slot>
+      <a href="/" data-link class="inline-flex min-h-11 items-center px-ui-16 text-body font-medium text-text-brand underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-border-focus">← Continuer mes achats</a>
+    </div>
+
+    <div class="flex flex-col gap-ui-16">
+      <slot name="recapitulatif"></slot>
+      <p class="text-caption text-text-secondary">Retrait gratuit · Paiement en magasin<br />Vous serez averti par e-mail quand la commande sera disponible.</p>
+    </div>
+  </div>
+</section>

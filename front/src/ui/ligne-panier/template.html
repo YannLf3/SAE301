@@ -1,0 +1,26 @@
+<li class="flex flex-col gap-ui-16 border-b border-border-default py-ui-20 first:pt-0 last:border-b-0">
+  <div class="flex gap-ui-16">
+    <div class="size-20 shrink-0 overflow-hidden rounded-ui-8 border border-border-default bg-surface-subtle md:size-22">
+      <img
+        src="{{image}}"
+        alt="{{nom}}"
+        width="88"
+        height="88"
+        loading="lazy"
+        decoding="async"
+        class="size-full object-contain p-ui-8"
+      />
+    </div>
+    <div class="flex min-w-0 flex-col gap-ui-4">
+      <a href="/produits/{{slug}}" data-link class="text-body font-medium text-text-primary underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-border-focus">{{nom}}</a>
+      <p class="text-label text-text-secondary">{{option}}</p>
+      <p class="text-label font-semibold text-text-primary">Prix unitaire : {{prix_unitaire}} · Qté {{quantite}}</p>
+      <p class="text-label font-semibold text-text-primary">Sous-total : {{sous_total}}</p>
+    </div>
+  </div>
+
+  <div class="flex items-center justify-between gap-ui-16">
+    <slot name="quantite"></slot>
+    <button type="button" data-action="supprimer" aria-label="Supprimer {{nom}}, {{option}}, du panier" class="flex min-h-11 items-center rounded-ui-8 px-ui-8 text-label text-text-brand underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-border-focus">Supprimer</button>
+  </div>
+</li>

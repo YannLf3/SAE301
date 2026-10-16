@@ -1,4 +1,4 @@
-import { CategorieData } from "../../data/categorie.js";
+import { PanierData } from "../../data/panier.js";
 import { htmlToFragment } from "../../lib/utils.js";
 import { HeaderView } from "../../ui/header/index.js";
 import template from "./template.html?raw";
@@ -6,53 +6,43 @@ import template from "./template.html?raw";
 /**
  * Layout principal : l'en-tête, puis la page affichée.
  *
- * Le router reconstruit le layout à chaque navigation : les catégories de
- * l'en-tête sont donc gardées dans M, et chargées une seule fois. Tant
- * qu'elles ne sont pas là, l'en-tête n'affiche que « Tous les produits ».
+ * Le router reconstruit le layout à chaque navigation. L'en-tête ne dépend
+ * que du panier : le compteur est relu depuis le stockage à chaque fois.
  *
  * Le slot nommé « header » est remplacé ici. Le slot sans nom est laissé au
  * routeur, qui y place la page.
  */
 
 let M = {
-  etat: "chargement", // "chargement" | "pret" | "erreur"
-  categories: [], // [ { slug, nom, total } ]
-  total: null, // produits toutes catégories confondues, null tant qu'inconnu
+  quantitePanier: 0, // nombre d'articles au panier (compteur de l'en-tête)
+  abonne: false, // true une fois le layout abonné aux changements du panier
 };
 
 /**
- * > rien ; range la réponse de l'API dans M, ou lève l'erreur
+ * > rien ; relit le nombre d'articles du panier dans M.quantitePanier
  */
-M.load = async function () {
-  let reponse = await CategorieData.fetchAll();
-  M.categories = reponse.categories;
-  M.total = reponse.total;
+M.loadPanier = function () {
+  M.quantitePanier = PanierData.compter();
 };
 
 let C = {};
 
 /**
- * Charge les catégories si elles ne le sont pas déjà, puis rafraîchit l'en-tête.
- * Une erreur n'est pas bloquante : la navigation reste utilisable, et le
- * chargement sera retenté à la prochaine navigation.
+ * Le panier a changé (cette page ou un autre onglet) : met le compteur à jour.
  */
-C.charger = async function () {
-  if (M.etat === "pret") {
-    return;
-  }
-
-  try {
-    await M.load();
-    M.etat = "pret";
-  } catch (erreur) {
-    M.etat = "erreur";
-  }
+C.handler_panierChange = function () {
+  M.loadPanier();
   V.rafraichir(M);
 };
 
 C.init = function () {
+  M.loadPanier();
+  // Le layout est reconstruit à chaque navigation : on ne s'abonne qu'une fois.
+  if (!M.abonne) {
+    PanierData.abonner(C.handler_panierChange);
+    M.abonne = true;
+  }
   let fragment = V.init(M);
-  C.charger();
   return fragment;
 };
 

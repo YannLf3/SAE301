@@ -1,0 +1,19 @@
+<aside aria-labelledby="titre-recap" class="rounded-ui-12 border border-border-default bg-surface-card p-card-padding md:p-ui-24">
+  <h2 id="titre-recap" class="mb-ui-16 text-heading-md font-medium text-text-primary">Récapitulatif</h2>
+
+  <dl class="flex flex-col gap-ui-4 border-b border-border-default pb-ui-16 text-label text-text-secondary">
+    <div class="flex justify-between"><dt>Sous-total</dt><dd>{{sous_total}}</dd></div>
+    <div class="flex justify-between"><dt>Frais de retrait</dt><dd>{{frais}}</dd></div>
+  </dl>
+
+  <p class="mt-ui-16 flex items-baseline justify-between text-text-primary">
+    <span class="text-heading-md font-medium">Total TTC</span>
+    <span class="text-heading-lg font-semibold">{{total}}</span>
+  </p>
+  <p class="mt-ui-12 text-caption text-text-secondary">TVA incluse · Paiement en magasin</p>
+
+  <button type="button" data-action="commander" class="mt-ui-16 flex h-12 w-full items-center justify-center rounded-ui-8 bg-action-primary-bg px-button-padding text-body font-medium text-action-primary-text transition-colors hover:bg-action-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-focus">
+    Commander en Click &amp; Collect
+  </button>
+  <p class="mt-ui-16 text-caption text-text-secondary">Connectez-vous pour poursuivre. Aucune adresse de livraison n'est demandée.</p>
+</aside>
